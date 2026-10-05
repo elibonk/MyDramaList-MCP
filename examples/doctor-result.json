@@ -1,0 +1,24 @@
+{
+  "server": {
+    "authenticated": false,
+    "read_only": false,
+    "account_scope": "one configured MyDramaList account for all connected MCP clients",
+    "client_version": "0.1.0",
+    "authentication_note": "A stored token is not proof it is valid. Use mdl_account_get_profile."
+  },
+  "checks": {
+    "mdl_titles_get_genres": {
+      "ok": true
+    },
+    "mdl_titles_get_title": {
+      "ok": false,
+      "code": "upstream_400",
+      "message": "MyDramaList rejected the request (400). Check fields, app version and upstream API compatibility. The private API may have changed."
+    },
+    "mdl_search_titles": {
+      "ok": false,
+      "code": "upstream_400",
+      "message": "MyDramaList rejected the request (400). Check fields, app version and upstream API compatibility. The private API may have changed."
+    }
+  }
+}

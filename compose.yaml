@@ -1,0 +1,38 @@
+services:
+  mdl:
+    build: .
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:${MDL_MCP_PORT:-8000}:8000"
+    environment:
+      MDL_MCP_TOKEN: ${MDL_MCP_TOKEN:?Set a random MDL_MCP_TOKEN in .env}
+      MDL_ACCESS_TOKEN: ${MDL_ACCESS_TOKEN:-}
+      MDL_TOKEN_FILE: /data/token.json
+      MDL_MCP_HOST: 0.0.0.0
+      MDL_MCP_PORT: 8000
+      MDL_MCP_READ_ONLY: ${MDL_MCP_READ_ONLY:-false}
+      MDL_MCP_ALLOWED_HOSTS: ${MDL_MCP_ALLOWED_HOSTS:-localhost,localhost:*,127.0.0.1,127.0.0.1:*}
+      MDL_MCP_ALLOWED_ORIGINS: ${MDL_MCP_ALLOWED_ORIGINS:-http://localhost:*,http://127.0.0.1:*}
+      MDL_TIMEOUT: ${MDL_TIMEOUT:-30}
+      MDL_REQUEST_INTERVAL: ${MDL_REQUEST_INTERVAL:-0.25}
+      MDL_IMPERSONATE: ${MDL_IMPERSONATE:-chrome}
+    volumes:
+      - mdl-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  mdl-data:
+

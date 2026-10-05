@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mydramalist-mcp"
+version = "0.1.0"
+description = "Self-hostable MyDramaList MCP server using mydramalist-client"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+  "mydramalist-client==0.1.0",
+  "mcp==1.30.0",
+  "python-dotenv>=1.1,<2",
+  "uvicorn>=0.31,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "httpx>=0.28,<1"]
+
+[project.scripts]
+mydramalist-mcp = "mydramalist_mcp.cli:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
